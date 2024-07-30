@@ -29,4 +29,10 @@ func main() {
 
 	sort.Ints(highscores)
 	fmt.Println(highscores)
+
+	//removing element from a slice
+	var courses = [] string {"react","ruby","python","java"}
+	var index int = 2
+	fmt.Println(append(courses[:index],courses[index+1:]...))	//we don't have a direct function so we print the rest of the slice excluding the index position one
+
 }
