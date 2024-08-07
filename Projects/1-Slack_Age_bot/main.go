@@ -14,8 +14,8 @@ func main() {
 	
 	//Setting environment
 	//These tokens authenticate the bot with Slack.
-	os.Setenv("SLACK_BOT_TOKEN","xoxb-7553825111601-7543697569012-yKiAda80nw2a1un1CHpOVtCN")
-	os.Setenv("SLACK_APP_TOKEN","xapp-1-A07FX4XHQJW-7563968975248-4dda5cf78e69a2560e06b0863c344111dc24b94b9b78036dce24077255e0fab7")
+	os.Setenv("SLACK_BOT_TOKEN","<Slack bot token>")
+	os.Setenv("SLACK_APP_TOKEN","<Slack app token>")
 
 	//creating bot
 	bot := slacker.NewClient(os.Getenv("SLACK_BOT_TOKEN"),os.Getenv("SLACK_APP_TOKEN"))
