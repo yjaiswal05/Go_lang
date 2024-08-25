@@ -8,15 +8,15 @@ import (
 	"os"
 	"strconv"
 
-
 )
 
 func main() {
-	os.Setenv("PexelsToken", "s1cmhRgBCgxMS6tWPP5q5GfTtxXVjX22aPNIwoA1CDlR7cmaXwn63aQb")
+	os.Setenv("PexelsToken", "")
 	var TOKEN = os.Getenv("PexelsToken")
 	
 	var c = NewClient(TOKEN)
-	result, err := c.SearchPhotos("sky",5,1)
+	result, err := c.SearchPhotos("water",5,1)
+
 	if err != nil {
 		fmt.Errorf("Search error:%v", err)
 	}
@@ -66,16 +66,17 @@ type PhotoSource struct{
 	Small			string			`json:"small"`
 	Portrait		string			`json:"portrait"`
 }
-type CuratedResult struct{
-	Page			int32			`json:"page"`
-	PerPage			int32			`json:"per_page"`
-	NextPage		int32			`json:"next_page"`
-	Photos			[]Photo			`json:"photos"`
-}
+// type CuratedResult struct{
+// 	Page			int32			`json:"page"`
+// 	PerPage			int32			`json:"per_page"`
+// 	NextPage		int32			`json:"next_page"`
+// 	Photos			[]Photo			`json:"photos"`
+// }
 func (c *Client) SearchPhotos(query string, perPage, page int) (*SeachResult,error)  {
 	url := fmt.Sprintf(PhotoApi+"/search?query=%s&per_page=%d&page=%d",query,perPage,page)
 	resp , err := c.requestDoWithAuth("GET",url)
 	defer resp.Body.Close()
+
 	data,err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil,err
@@ -90,7 +91,7 @@ func (c *Client) requestDoWithAuth(method, url string) (*http.Response,error)  {
 	if err != nil {
 		return nil,err
 	}
-	req.Header.Add("Autorization",c.Token)
+	req.Header.Add("Authorization",c.Token)
 	resp,err := c.hc.Do(req)
 	if err != nil {
 		return resp,err
@@ -104,15 +105,15 @@ func (c *Client) requestDoWithAuth(method, url string) (*http.Response,error)  {
 	return resp,nil
 }
 
-func (c *Client) CuratedPhotos(perPage, page int) (*CuratedResult,error)  {
-	url := fmt.Sprintf(PhotoApi+"/curated?per_page=%d&page=%d",perPage,page)
-	resp , err := c.requestDoWithAuth("GET",url)
-	defer resp.Body.Close()
-	data,err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil,err
-	}
-	var result CuratedResult
-	err = json.Unmarshal(data, &result)
-	return &result,err
-}
+// func (c *Client) CuratedPhotos(perPage, page int) (*CuratedResult,error)  {
+// 	url := fmt.Sprintf(PhotoApi+"/curated?per_page=%d&page=%d",perPage,page)
+// 	resp , err := c.requestDoWithAuth("GET",url)
+// 	defer resp.Body.Close()
+// 	data,err := io.ReadAll(resp.Body)
+// 	if err != nil {
+// 		return nil,err
+// 	}
+// 	var result CuratedResult
+// 	err = json.Unmarshal(data, &result)
+// 	return &result,err
+// }
